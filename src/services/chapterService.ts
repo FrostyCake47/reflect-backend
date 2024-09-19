@@ -24,6 +24,8 @@ class ChapterService{
     }
 }
 
+export default new ChapterService();
+
 
 
 

@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express';
 import userRoutes from './routes/userRoutes';
 import dotenv from 'dotenv';
 import connectDB from './config/db';
+import chapterRoutes from './routes/chapterRoutes';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.get('/', (req: Request, res: Response) => {
 
 
 app.use('/api/users', userRoutes);
+app.use('/api/chapters', chapterRoutes);
 
 // Start server
 app.listen(PORT, () => {
