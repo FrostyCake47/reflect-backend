@@ -16,7 +16,7 @@ class ChapterService{
 
     public async updateChapter(uid: string, id: string, chapterData: IChapter) : Promise<IChapter | null> {
         const newChapter = new Chapter(chapterData);
-        return Chapter.findOneAndUpdate({uid: uid, _id: id}, chapterData, {new: true});
+        return Chapter.findOneAndUpdate({uid: uid, _id: id}, newChapter, {new: true});
     }
 
     public async deleteChapter(uid: string, id: string) : Promise<IChapter | null>{
