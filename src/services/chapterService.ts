@@ -22,6 +22,15 @@ class ChapterService{
     public async deleteChapter(uid: string, id: string) : Promise<IChapter | null>{
         return Chapter.findOneAndDelete({uid: uid, _id: id});
     }
+
+    public async incrementEntryCount(id: string) : Promise<IChapter | null>{
+        return Chapter.findOneAndUpdate({_id: id}, {$inc: {entryCount: 1}}, {new: true});
+    }
+
+    public async decrementEntryCount(id: String) : Promise<IChapter | null>{
+        console.log("Decrementing entry count for chapter: " + id);
+        return Chapter.findOneAndUpdate({_id: id}, {$inc: {entryCount: -1}}, {new: true});
+    }
 }
 
 export default new ChapterService();

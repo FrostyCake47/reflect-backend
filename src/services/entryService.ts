@@ -31,6 +31,27 @@ class EntryService{
         }
         return entry;
     }
+
+    public async deleteEntry(chapterId: string, entryId: string) : Promise<IEntry | null>{
+        const chapter = await chapterService.getChapterById(chapterId);
+        if(chapter){
+            if(chapter.entries){
+                const entry = chapter.entries.find(e => e._id == entryId);
+                if(entry){
+                    chapter.entries = chapter.entries.filter(e => e._id != entryId) as [IEntry];
+                    chapter.save();
+                    return entry;
+                }
+            }
+            else{
+                throw new Error('Entry not found');
+            }
+        }
+        else{
+            throw new Error('Chapter not found');
+        }
+        return null;
+    }
 }
 
 export default new EntryService();
