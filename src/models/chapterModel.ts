@@ -1,6 +1,7 @@
 import mangoose, { Schema, Document, Types } from 'mongoose';
 
 export interface IChapter extends Document {
+    uid: string;
     title: string;
     description?: string;
     imageUrl?: string[];
@@ -9,6 +10,7 @@ export interface IChapter extends Document {
 };
 
 const chapterSchema: Schema = new Schema({
+    uid: {type: String, required: true},
     title: {type: String, required: true},
     description: String,
     imageUrl: [String],
