@@ -52,6 +52,27 @@ class EntryService{
         }
         return null;
     }
+
+    public async updateEntry(entry: IEntry, chapterId: string) : Promise<IEntry | null>{
+        const chapter = await chapterService.getChapterById(chapterId);
+        if(chapter){
+            if(chapter.entries){
+                const index = chapter.entries.findIndex(e => e._id == entry._id);
+                if(index != -1){
+                    chapter.entries[index] = entry;
+                    chapter.save();
+                    return entry;
+                }
+            }
+            else{
+                throw new Error('Entry not found');
+            }
+        }
+        else{
+            throw new Error('Chapter not found');
+        }
+        return null;
+    }
 }
 
 export default new EntryService();

@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { getAllEntriesOfChapter, createEntry, deleteEntry } from '../controllers/entryController'; 
+import { getAllEntriesOfChapter, createEntry, deleteEntry, updateEntry } from '../controllers/entryController'; 
 
 const router: Router = Router();
 
 router.get('/:chapterId', getAllEntriesOfChapter);
 router.post('/', createEntry);
 router.delete('/', deleteEntry);
-//router.post('/update', updateChapter);
+router.post('/update', updateEntry);
 
 export default router;

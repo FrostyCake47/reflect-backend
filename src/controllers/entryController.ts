@@ -44,3 +44,16 @@ export const deleteEntry = async (req: Request, res: Response) : Promise<void> =
         res.status(500).json({error:error.message});
     }
 }
+
+export const updateEntry = async (req: Request, res: Response) : Promise<void> => {
+    try{
+        const {entry, chapterId} = req.body;
+        const _entry = await EntryService.updateEntry(entry, chapterId);
+
+        console.log("Entry updated! " + _entry);
+        res.status(200).json(_entry);
+    } catch(error: any){
+        console.log(error.message);
+        res.status(500).json({error:error.message});
+    }
+}
