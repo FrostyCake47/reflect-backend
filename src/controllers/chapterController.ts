@@ -34,13 +34,27 @@ export const deleteChapter = async (req: Request, res: Response) : Promise<void>
     try {
         const {uid, id} = req.query;
         console.log("Deleting chapter: " + id + " for user: " + uid);
+
         const chapter = await ChapterService.deleteChapter(uid as string, id as string);
         await userService.unlinkChapterFromUser(uid as string, id as string);
-        
+
         console.log("Chapter deleted! " + id);
         res.status(200).json(chapter);
     } catch(error: any){
         console.log(error.message);
         res.status(500).json({error:error.message});
+    }
+}
+
+export const updateChapter = async (req: Request, res: Response) : Promise<void> => {
+    try{
+        const {chapter} = req.body;
+        const _chapter = await ChapterService.updateChapter(chapter as IChapter, chapter._id as string);
+
+        console.log("Chapter updated! ");
+        res.status(200).json(_chapter);
+    } catch(error: any){
+        console.log(error.message);
+        res.status(500).json({error:error});
     }
 }
