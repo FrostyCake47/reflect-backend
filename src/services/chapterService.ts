@@ -5,8 +5,8 @@ class ChapterService{
         return await Chapter.find({ uid: uid });
     }
 
-    public async getChapterById(uid: string, id: string) : Promise<IChapter | null> {
-        return await Chapter.findOne({ uid: uid, _id: id });
+    public async getChapterById(id: string) : Promise<IChapter | null> {
+        return await Chapter.findOne({ _id: id });
     }
 
     public async createChapter(chapterData: IChapter): Promise<IChapter> {

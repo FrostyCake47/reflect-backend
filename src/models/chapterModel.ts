@@ -1,4 +1,5 @@
 import mangoose, { Schema, Document, Types } from 'mongoose';
+import { IEntry } from './entryModel';
 
 export interface IChapter extends Document {
     uid: string;
@@ -6,7 +7,7 @@ export interface IChapter extends Document {
     description?: string;
     imageUrl?: string[];
     entryCount: number;
-    entries?: Array<Types.ObjectId>;
+    entries?: [IEntry];
 };
 
 const chapterSchema: Schema = new Schema({
@@ -15,7 +16,12 @@ const chapterSchema: Schema = new Schema({
     description: String,
     imageUrl: [String],
     entryCount: {type: Number, required: true},
-    entries: [{type: Schema.Types.ObjectId, ref: 'Entry'}]
+    entries: [{
+        title: { type: String, required: true },
+        content: { type: Array<{ [key: string]: any }> },  // Use dynamic keys for content
+        date: { type: Date, required: true },
+        tags: { type: [String], required: false }
+    }]
 });
 
 const Chapter = mangoose.model<IChapter>('Chapter', chapterSchema);
