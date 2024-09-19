@@ -1,5 +1,6 @@
 // src/app.ts
 import express, { Request, Response } from 'express';
+import userRoutes from './routes/userRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,6 +12,9 @@ app.use(express.json());
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript with Express!.. DOes it edit now');
 });
+
+
+app.use('/api/users', userRoutes);
 
 // Start server
 app.listen(PORT, () => {

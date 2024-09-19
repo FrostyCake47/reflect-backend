@@ -3,9 +3,11 @@
     "target": "ES6",              // Specify ECMAScript target version
     "module": "commonjs",          // Node.js uses CommonJS
     "rootDir": "./src",            // Specify the root directory of input files
-    "outDir": "./dist",            // Specify an output directory
-    "esModuleInterop": true,       // Allows for default imports from CommonJS modules
-    "strict": true                 // Enable strict type-checking
+    "outDir": "./dist",            // Specify an output directory     // Allows for default imports from CommonJS modules
+    "strict": true,                 // Enable strict type-checking
+    "esModuleInterop": true,                 
+    "skipLibCheck": true,                    
+    "forceConsistentCasingInFileNames": true 
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
