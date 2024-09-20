@@ -23,7 +23,7 @@ export const createChapter = async (req: Request, res: Response) : Promise<void>
         await userService.linkChapterToUser(chapter.uid, _chapter._id as string);
 
         console.log("Chapter created! " + _chapter._id);
-        res.status(200).json(_chapter);
+        res.status(201).json(_chapter);
     } catch(error: any){
         console.log(error.message);
         res.status(500).json({error:error.message});

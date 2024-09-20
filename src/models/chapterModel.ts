@@ -21,8 +21,9 @@ const chapterSchema: Schema = new Schema({
         content: { type: Array<{ [key: string]: any }> },  // Use dynamic keys for content
         date: { type: Date, required: true },
         tags: { type: [String], required: false }
-    }]
-});
+    }],}, 
+    { timestamps: true}
+);
 
 const Chapter = mangoose.model<IChapter>('Chapter', chapterSchema);
 export default Chapter;

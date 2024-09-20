@@ -71,7 +71,7 @@ class EntryService{
         else{
             throw new Error('Chapter not found');
         }
-        return null;
+        return entry;
     }
 }
 
