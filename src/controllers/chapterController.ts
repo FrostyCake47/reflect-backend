@@ -9,6 +9,7 @@ export const getChapters = async (req: Request, res: Response) : Promise<void> =
     try{
         const {uid} = req.params;
         const chapters = await ChapterService.getChapters(uid);
+        console.log("Chapters fetched! from uid: " + uid);
         res.status(200).json(chapters);
     } catch(error: any){
         console.log(error.message);
