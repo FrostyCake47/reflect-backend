@@ -2,7 +2,7 @@ import Chapter, { IChapter } from "../models/chapterModel";
 
 class ChapterService{
     public async getChapters(uid: string): Promise<IChapter[] | null> {
-        return await Chapter.find({ uid: uid });
+        return await Chapter.find({ uid: uid }).select('-entries');
     }
 
     public async getChapterById(id: string) : Promise<IChapter | null> {
@@ -16,11 +16,12 @@ class ChapterService{
 
     public async updateChapter(chapterData: IChapter, id: string) : Promise<IChapter | null> {
         const newChapter = new Chapter(chapterData);
-        return Chapter.findOneAndUpdate({uid: chapterData.uid, _id: id}, newChapter, {new: true});
+        console.log(newChapter);    
+        return Chapter.findOneAndUpdate({_id: chapterData._id}, {title: chapterData.title, description: chapterData.description}, {new: true});
     }
 
-    public async deleteChapter(uid: string, id: string) : Promise<IChapter | null>{
-        return Chapter.findOneAndDelete({uid: uid, _id: id});
+    public async deleteChapter(id: string) : Promise<IChapter | null>{
+        return Chapter.findOneAndDelete({_id: id});
     }
 
     public async incrementEntryCount(id: string) : Promise<IChapter | null>{

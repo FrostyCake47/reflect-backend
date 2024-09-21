@@ -5,13 +5,15 @@ export interface IEntry extends Document{
     content?: Array<{ [key:string]:any }>;
     date: Date;
     tags?: string[];
+    chapterId: string;
 }
 
 const entrySchema: Schema = new Schema({
     title: { type: String, required: true },
     content: [{ type: Map, of: Schema.Types.Mixed }],  // Dynamic content
     date: { type: Date, required: true },
-    tags: [String]  // Optional tags
+    tags: [String],  // Optional tags
+    chapterId: { type: String, required: true }
 });
 
 const Entry = mangoose.model<IEntry>('Entry', entrySchema);
