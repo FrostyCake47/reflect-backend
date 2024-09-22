@@ -12,7 +12,6 @@ class EntryService{
         else{
             throw new Error('Chapter not found');
         }
-        return null;
     }
 
     public async createEntry(entry: IEntry, chapterId: string) : Promise<IEntry>{
