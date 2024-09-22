@@ -1,7 +1,7 @@
 import Chapter, { IChapter } from "../models/chapterModel";
 import { IEntry } from "../models/entryModel";
 import chapterService from "./chapterService";
-
+import mongoose, { ObjectId } from 'mongoose';
 
 class EntryService{
     public async getEntries(chapterId : string) : Promise<IEntry[] | null>{
@@ -18,6 +18,7 @@ class EntryService{
     public async createEntry(entry: IEntry, chapterId: string) : Promise<IEntry>{
         const chapter = await chapterService.getChapterById(chapterId);
         if(chapter){
+            if(entry._id == null) entry._id = new mongoose.Types.ObjectId();
             if(chapter.entries){
                 chapter.entries.push(entry);
             }

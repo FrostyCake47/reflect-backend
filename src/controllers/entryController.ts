@@ -18,13 +18,14 @@ export const getAllEntriesOfChapter = async (req: Request, res: Response) : Prom
 
 export const createEntry = async (req: Request, res: Response) : Promise<void> => {
     try{
-        const {entry, chapterId} = req.body;
-        console.log("Creating entry: " + JSON.stringify(entry) + " for chapter: " + chapterId);
-        const _entry = await EntryService.createEntry(entry, chapterId);
-        await ChapterService.incrementEntryCount(chapterId);
-
-        console.log("Entry created! " + JSON.stringify(_entry));
-        res.status(200).json(_entry);
+        const {entry} = req.body;
+        if(entry._id == null){
+            console.log("Creating entry: " + JSON.stringify(entry) + " for chapter: " + entry.chapterId);
+            const _entry = await EntryService.createEntry(entry, entry.chapterId);
+            await ChapterService.incrementEntryCount(entry.chapterId);
+            console.log("Entry created! " + JSON.stringify(_entry));
+            res.status(201).json(_entry);
+        }
     } catch(error: any){
         console.log(error.message);
         res.status(500).json({error:error.message});
@@ -48,8 +49,9 @@ export const deleteEntry = async (req: Request, res: Response) : Promise<void> =
 
 export const updateEntry = async (req: Request, res: Response) : Promise<void> => {
     try{
-        const {entry, chapterId} = req.body;
-        const _entry = await EntryService.updateEntry(entry, chapterId);
+        const {entry} = req.body;
+        console.log("wbt here?");
+        const _entry = await EntryService.updateEntry(entry, entry.chapterId);
 
         console.log("Entry updated! " + _entry);
         res.status(200).json(_entry);
