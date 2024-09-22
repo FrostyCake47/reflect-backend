@@ -37,10 +37,14 @@ export const deleteEntry = async (req: Request, res: Response) : Promise<void> =
         const {chapterId, entryId} = req.query;
         console.log("Deleting entry: " + entryId + " for chapter: " + chapterId);
         const entry = await EntryService.deleteEntry(chapterId as string, entryId as string);
-        await ChapterService.decrementEntryCount(chapterId as String);
-
-        console.log("Entry deleted! " + entry);
-        res.status(200).json(entry);
+        if(entry){
+            console.log("Entry deleted! " + entry);
+            await ChapterService.decrementEntryCount(chapterId as String);
+            res.status(200).json(entry);
+        }
+        else{
+            res.status(404).json({message: "Entry not found"});
+        }
     } catch(error: any){
         console.log(error.message);
         res.status(500).json({error:error.message});
