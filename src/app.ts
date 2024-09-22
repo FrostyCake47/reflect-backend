@@ -20,12 +20,12 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript with Express!.. DOes it edit now');
 });
 
-
 app.use('/api/users', userRoutes);
 app.use('/api/chapters', chapterRoutes);
 app.use('/api/entries', entryRoutes);
 
 // Start server
+//yasss
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
