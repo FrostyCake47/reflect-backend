@@ -3,22 +3,38 @@ import UserService from "../services/userService";
 import { IUser } from "../models/userModel";
 
 export const getUsers = (req: Request, res: Response) : void => {
-    const users = UserService.getUsers();
-    res.status(200).json(users);
+    try{
+        const users = UserService.getUsers();
+        res.status(200).json(users);
+    } catch(error: any){
+        console.log(error.message);
+        res.status(500).json({error:error.message});
+    }
 }
 
 export const getUserById = (req: Request, res: Response) : void => {
-    const userId = req.params.id;
-    const user = UserService.getUserById(userId);
-
-    res.status(200).json(user);
+    try{
+        const userId = req.params.id;
+        const user = UserService.getUserById(userId);
+        res.status(200).json(user);
+    } catch(error: any){
+        console.log(error.message);
+        res.status(500).json({error:error.message});
+    }
 }
 
 export const createUser = (req: Request, res: Response) : void => {
-    const {uid, name, email } = req.body;
-    console.log(req.body);
-    const iuser: IUser = {uid, name, email} as IUser;
-    const newUser = UserService.createUser(iuser);
-    
-    res.status(201).json(newUser);
+    try{
+        const {uid, name, email } = req.body;
+        console.log(req.body);
+        const iuser: IUser = {uid, name, email} as IUser;
+        const newUser = UserService.createUser(iuser);
+        if(newUser) res.status(201).json(newUser);
+        else res.status(409).json({message: "User already exists"});
+        
+
+    } catch(error: any){
+        console.log(error.message);
+        res.status(500).json({error:error.message});
+    }
 }

@@ -9,12 +9,11 @@ class UserService {
         return await User.findOne({ uid: id });
     }
 
-    public async createUser(userData: IUser): Promise<IUser> {
-        const existingUser = await User.findOne({ email: userData.email });
+    public async createUser(userData: IUser): Promise<IUser | null>  {
+        const existingUser = await User.findOne({ uid: userData.uid });
         if (existingUser) {
-          throw new Error('User already exists');
+          return null;
         }
-    
         const newUser = new User(userData);
         return newUser.save();  // Business logic: Save user to the DB
     }

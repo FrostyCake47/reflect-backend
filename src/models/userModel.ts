@@ -5,13 +5,26 @@ export interface IUser extends Document {
     name: string;
     email: string;
     chapterIds: [string];
+    updateTimestamp: {
+        chapters : Date,
+        entries: {
+            [entryId: string] : Date
+        }
+    }
 }
 
 const userSchema: Schema = new Schema({
     uid: {type: String, required: true},
     name: {type: String, required: true},
     email: {type: String, required: true},
-    chapterIds: [String] 
+    chapterIds: [String],
+    updateTimestamp : {
+        chapters : {type: Date},
+        entries: {
+            type: Map,
+            of: { type: Date }
+        }
+    }
 }, { 
     timestamps: true 
 });

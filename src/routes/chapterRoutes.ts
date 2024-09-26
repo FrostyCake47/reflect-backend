@@ -3,7 +3,7 @@ import { getChapters, createChapter, deleteChapter, updateChapter} from '../cont
 
 const router: Router = Router();
 
-router.get('/:uid', getChapters);
+router.get('/', getChapters);
 router.post('/', createChapter);
 router.delete('/', deleteChapter);
 router.post('/update', updateChapter);

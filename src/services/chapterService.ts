@@ -1,8 +1,21 @@
 import Chapter, { IChapter } from "../models/chapterModel";
+import timestampService from "./timestampService";
+import { DateTime } from 'luxon';
 
 class ChapterService{
-    public async getChapters(uid: string): Promise<IChapter[] | null> {
-        return await Chapter.find({ uid: uid }).select('-entries');
+    public async getChapters(uid: string, date: Date): Promise<IChapter[] | null> {
+        const chapterUpdatedAt = await timestampService.getChapterTimestamp(uid).then((user) => {
+            if(user){
+                return user.updateTimestamp.chapters;
+            }
+            else{
+                return null;
+            }
+        });
+
+        console.log("Chapter updated at: " + chapterUpdatedAt + " Date: " + date + " Comparison: " + (chapterUpdatedAt && chapterUpdatedAt > date));
+        if(chapterUpdatedAt && chapterUpdatedAt > date) return await Chapter.find({ uid: uid }).select('-entries');
+        else return null;
     }
 
     public async getChapterById(id: string) : Promise<IChapter | null> {
