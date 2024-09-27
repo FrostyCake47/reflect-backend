@@ -7,8 +7,8 @@ export interface IUser extends Document {
     chapterIds: [string];
     updateTimestamp: {
         chapters : Date,
-        entries: {
-            [entryId: string] : Date
+        entriesOfChapter: {
+            [chaperId: string] : Date
         }
     }
 }
@@ -20,7 +20,7 @@ const userSchema: Schema = new Schema({
     chapterIds: [String],
     updateTimestamp : {
         chapters : {type: Date},
-        entries: {
+        entriesOfChapter: {
             type: Map,
             of: { type: Date }
         }
