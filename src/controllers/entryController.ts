@@ -29,6 +29,7 @@ export const createEntry = async (req: Request, res: Response) : Promise<void> =
             
             if(_entry){
                 console.log("Entry created! " + JSON.stringify(_entry));
+
                 await timestampService.updateEntryTimestamp(uid as string, entry.chapterId);
                 await timestampService.updateChapterTimestamp(uid as string);
                 res.status(201).json(_entry);
