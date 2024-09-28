@@ -3,7 +3,7 @@ import { getAllEntriesOfChapter, createEntry, deleteEntry, updateEntry } from '.
 
 const router: Router = Router();
 
-router.get('/:chapterId', getAllEntriesOfChapter);
+router.get('/', getAllEntriesOfChapter);
 router.post('/', createEntry);
 router.delete('/', deleteEntry);
 router.post('/update', updateEntry);

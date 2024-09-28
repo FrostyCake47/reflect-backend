@@ -9,14 +9,14 @@ import { DateTime } from 'luxon';
 export const getChapters = async (req: Request, res: Response) : Promise<void> => {
     try{
         const {uid, date} = req.query;
-        console.log("Fetching chapters for user: " + uid + " with date: " + new Date(date as string));
+        //console.log("Fetching chapters for user: " + uid + " with date: " + new Date(date as string));
         const chapters = await ChapterService.getChapters(uid as string, new Date(date as string));
         if(chapters){
-            console.log("Chapters fetched! from uid: " + uid);
+            //console.log("Chapters fetched! from uid: " + uid);
             res.status(200).json(chapters);
         }
         else{
-            console.log("user already has latest data");
+            //console.log("user already has latest data");
             res.status(304).json({message: "User already has latest data"});
         }
     } catch(error: any){

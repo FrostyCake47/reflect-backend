@@ -7,7 +7,7 @@ class TimestampService{
 
     public async updateChapterTimestamp(uid: string): Promise<IUser | null>{
         console.log("Updating chapter timestamp for user: " + uid);
-        return User.findOneAndUpdate({uid: uid}, { $set: { 'updateTimestamp.chapters': new Date() } }, {new: true}).exec();
+        return User.findOneAndUpdate({uid: uid}, { $set: { 'updateTimestamp.chapters': new Date() } }, {new: true}).exec()
     }
 
     public async updateEntryTimestamp(uid: string, chapterId: string): Promise<IUser | null>{
@@ -30,14 +30,10 @@ class TimestampService{
         return User.findOneAndUpdate({uid: uid}, { $set: { 'updateTimestamp.entriesOfChapter': entriesOfChapter } }, {new: true}).exec();
     }
 
-    /*public async getEntryTimestamp(uid: string, chapterId: string): Promise<Date | null>{
-        const user = await User.findOne(
-            { uid },
-            { [`updateTimestamp.entriesOfChapter.${chapterId}`]: 1 }  // Only fetch the specific field
-          ).lean<IUser>().exec();
-        
-        return user?.updateTimestamp.entriesOfChapter;
-    }*/
+    public async getEntryTimestamp(uid: string, chapterId: string): Promise<Date>{
+        const user = await User.findOne({uid: uid}).exec();
+        return user?.updateTimestamp.entriesOfChapter.find((entry) => entry.chapterId === chapterId)?.updatedAt ?? new Date();
+    }
 }
 
 export default new TimestampService;

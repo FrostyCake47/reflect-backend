@@ -13,7 +13,7 @@ class ChapterService{
             }
         });
 
-        console.log("Chapter updated at: " + chapterUpdatedAt + " Date: " + date + " Comparison: " + (chapterUpdatedAt && chapterUpdatedAt > date));
+        //console.log("Chapter updated at: " + chapterUpdatedAt + " Date: " + date + " Comparison: " + (chapterUpdatedAt && chapterUpdatedAt > date));
         if(chapterUpdatedAt && chapterUpdatedAt > date) return await Chapter.find({ uid: uid }).select('-entries');
         else return null;
     }
