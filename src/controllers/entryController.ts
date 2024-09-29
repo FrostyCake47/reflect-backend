@@ -7,13 +7,22 @@ import { IEntry } from "../models/entryModel";
 
 export const getAllEntriesOfChapter = async (req: Request, res: Response) : Promise<void> => {
     try{
-        const {chapterId, uid, date} = req.query;
+        const {chapterId, uid, date, explicit} = req.query;
+        const _explicit = explicit == 'true';
+        console.log("explicit: " + _explicit);
+
+        if(_explicit){
+            const entries = await EntryService.getEntries(chapterId as string);
+            res.status(200).json(entries);
+            return;
+        }
+
         const chapterLastUpdated = await timestampService.getEntryTimestamp(uid as string, chapterId as string);
         console.log("Fetching entries for chapter: " + chapterId + " with last updated: " + chapterLastUpdated + "with client at: " + new Date(date as string));
         
         if(chapterLastUpdated && chapterLastUpdated > new Date(date as string)){
             const entries = await EntryService.getEntries(chapterId as string);
-            console.log("Entries found! " + entries);
+            console.log("Entries found!");
             res.status(200).json(entries);
         }
         else{

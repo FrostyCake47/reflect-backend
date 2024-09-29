@@ -3,7 +3,9 @@ import timestampService from "./timestampService";
 import { DateTime } from 'luxon';
 
 class ChapterService{
-    public async getChapters(uid: string, date: Date): Promise<IChapter[] | null> {
+    public async getChapters(uid: string, date: Date, explicit: boolean): Promise<IChapter[] | null> {
+        if(explicit) return await Chapter.find({ uid: uid }).select('-entries');
+        
         const chapterUpdatedAt = await timestampService.getChapterTimestamp(uid).then((user) => {
             if(user){
                 return user.updateTimestamp.chapters;
