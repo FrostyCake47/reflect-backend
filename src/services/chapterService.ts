@@ -5,7 +5,7 @@ import { DateTime } from 'luxon';
 class ChapterService{
     public async getChapters(uid: string, date: Date, explicit: boolean): Promise<IChapter[] | null> {
         if(explicit) return await Chapter.find({ uid: uid }).select('-entries');
-        
+
         const chapterUpdatedAt = await timestampService.getChapterTimestamp(uid).then((user) => {
             if(user){
                 return user.updateTimestamp.chapters;
@@ -29,10 +29,10 @@ class ChapterService{
         return newChapter.save();
     }
 
-    public async updateChapter(chapterData: IChapter, id: string) : Promise<IChapter | null> {
+    public async updateChapter(chapterData: IChapter, id: string, date: string) : Promise<IChapter | null> {
         const newChapter = new Chapter(chapterData);
         console.log(newChapter);    
-        return Chapter.findOneAndUpdate({_id: chapterData._id}, {title: chapterData.title, description: chapterData.description}, {new: true});
+        return Chapter.findOneAndUpdate({_id: chapterData._id}, {"$set" : {title: chapterData.title, description: chapterData.description, date: new Date(date)}}, {new: true});
     }
 
     public async deleteChapter(id: string) : Promise<IChapter | null>{

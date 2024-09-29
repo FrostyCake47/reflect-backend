@@ -8,6 +8,7 @@ export interface IChapter extends Document {
     imageUrl?: string[];
     entryCount: number;
     entries?: [IEntry];
+    date: Date;
 };
 
 const chapterSchema: Schema = new Schema({
@@ -15,6 +16,7 @@ const chapterSchema: Schema = new Schema({
     title: {type: String, required: true},
     description: String,
     imageUrl: [String],
+    date: {type: Date, required: true},
     entryCount: {type: Number, required: true},
     entries: [{
         title: { type: String, required: true },
@@ -23,7 +25,7 @@ const chapterSchema: Schema = new Schema({
         tags: { type: [String], required: false },
         chapterId: { type: String, required: true }
     }],}, 
-    { timestamps: true}
+    { timestamps: true }
 );
 
 const Chapter = mangoose.model<IChapter>('Chapter', chapterSchema);

@@ -13,6 +13,7 @@ export const getChapters = async (req: Request, res: Response) : Promise<void> =
         const chapters = await ChapterService.getChapters(uid as string, new Date(date as string), _explicit);
         if(chapters){
             console.log("Chapters fetched! from uid: " + uid);
+            console.log(chapters);
             res.status(200).json(chapters);
         }
         else{
@@ -67,7 +68,7 @@ export const updateChapter = async (req: Request, res: Response) : Promise<void>
     try{
         const {chapter} = req.body;
         console.log("Updating chapter: " + JSON.stringify(chapter));
-        const _chapter = await ChapterService.updateChapter(chapter as IChapter, chapter.id as string);
+        const _chapter = await ChapterService.updateChapter(chapter as IChapter, chapter.id as string, chapter.date as string);
         if(_chapter == null){
             res.status(404).json({error: "Chapter not found!"});
             return;
