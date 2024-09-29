@@ -16,7 +16,7 @@ const chapterSchema: Schema = new Schema({
     title: {type: String, required: true},
     description: String,
     imageUrl: [String],
-    date: {type: Date, required: true},
+    date: {type: Date},
     entryCount: {type: Number, required: true},
     entries: [{
         title: { type: String, required: true },
