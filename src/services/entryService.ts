@@ -57,6 +57,7 @@ class EntryService{
         const chapter = await chapterService.getChapterById(chapterId);
         if(chapter){
             if(chapter.entries){
+                console.log(entry);
                 const index = chapter.entries.findIndex(e => e._id == entry._id);
                 if(index != -1){
                     chapter.entries[index] = entry;
