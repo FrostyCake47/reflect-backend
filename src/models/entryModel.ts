@@ -4,7 +4,7 @@ export interface IEntry extends Document{
     title: string;
     content?: Array<{ [key:string]:any }>;
     date: Date;
-    tags?: string[];
+    tags?: Array<{ [key:string]:any }>;
     chapterId: string;
 }
 
@@ -12,7 +12,7 @@ const entrySchema: Schema = new Schema({
     title: { type: String, required: true },
     content: [{ type: Map, of: Schema.Types.Mixed }],  // Dynamic content
     date: { type: Date, required: true },
-    tags: [String],  // Optional tags
+    tags: [{ type: Map, of: Schema.Types.Mixed }],  // Dynamic content
     chapterId: { type: String, required: true }
 });
 
