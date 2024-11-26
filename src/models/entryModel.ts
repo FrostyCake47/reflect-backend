@@ -6,6 +6,7 @@ export interface IEntry extends Document{
     date: Date;
     tags?: Array<{ [key:string]:any }>;
     chapterId: string;
+    encrypted: boolean;
 }
 
 const entrySchema: Schema = new Schema({
@@ -13,7 +14,8 @@ const entrySchema: Schema = new Schema({
     content: [{ type: Map, of: Schema.Types.Mixed }],  // Dynamic content
     date: { type: Date, required: true },
     tags: [{ type: Map, of: Schema.Types.Mixed }],  // Dynamic content
-    chapterId: { type: String, required: true }
+    chapterId: { type: String, required: true },
+    encrypted: {type: Boolean }
 });
 
 const Entry = mangoose.model<IEntry>('Entry', entrySchema);

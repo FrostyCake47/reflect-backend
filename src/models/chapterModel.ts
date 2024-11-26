@@ -23,7 +23,8 @@ const chapterSchema: Schema = new Schema({
         content: { type: Array<{ [key: string]: any }> },  // Use dynamic keys for content
         date: { type: Date, required: true },
         tags: { type: Array<{ [key: string]: any }> },  // Use dynamic keys for content
-        chapterId: { type: String, required: true }
+        chapterId: { type: String, required: true },
+        encrypted: {type: Boolean }
     }],}, 
     { timestamps: true }
 );
