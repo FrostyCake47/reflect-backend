@@ -23,16 +23,15 @@ export const getUserById = (req: Request, res: Response) : void => {
     }
 }
 
-export const createUser = (req: Request, res: Response) : void => {
+export const createUser = async (req: Request, res: Response) : Promise<void> => {
     try{
-        const {uid, name, email } = req.body;
+        const {uid, name, email, devices} = req.body;
         console.log(req.body);
-        const iuser: IUser = {uid, name, email} as IUser;
-        const newUser = UserService.createUser(iuser);
-        if(newUser) res.status(201).json(newUser);
-        else res.status(409).json({message: "User already exists"});
-        
+        const iuser: IUser = {uid, name, email, devices} as IUser;
 
+        const newUserMsg = await UserService.createUser(iuser);
+        if(newUserMsg != "User already exists") res.status(201).json({"message": newUserMsg});
+        else res.status(409).json({message: newUserMsg});
     } catch(error: any){
         console.log(error.message);
         res.status(500).json({error:error.message});

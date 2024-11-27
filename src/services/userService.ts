@@ -9,13 +9,20 @@ class UserService {
         return await User.findOne({ uid: id });
     }
 
-    public async createUser(userData: IUser): Promise<IUser | null>  {
+    public async createUser(userData: IUser): Promise<String>  {
         const existingUser = await User.findOne({ uid: userData.uid });
         if (existingUser) {
-          return null;
+            if(existingUser.devices.includes(userData.devices[0])) return "User already exists";
+            else {
+                console.log("Adding new device");
+                existingUser.devices.push(userData.devices[0]);
+                existingUser.save();
+                return "User already exists but device added";
+            }
         }
         const newUser = new User(userData);
-        return newUser.save();  // Business logic: Save user to the DB
+        newUser.save();  // Business logic: Save user to the DB
+        return "User created";
     }
 
     public async linkChapterToUser(uid: string, _id: string): Promise<void> {

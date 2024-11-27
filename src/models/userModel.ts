@@ -5,6 +5,7 @@ export interface IUser extends Document {
     name: string;
     email: string;
     chapterIds: [string];
+    devices: [string];
     updateTimestamp: {
         chapters : Date,
         entriesOfChapter: [{
@@ -19,6 +20,7 @@ const userSchema: Schema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     chapterIds: [String],
+    devices: [String],
     updateTimestamp : {
         chapters : {type: Date},
         entriesOfChapter: [
