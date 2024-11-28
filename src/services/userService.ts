@@ -79,7 +79,7 @@ class UserService {
         }
     }
 
-    public async updateUserDevice(uid: string, device: IDevice): Promise<void> {
+    public async updateUserDevice(uid: string, device: IDevice): Promise<{}> {
         const user = await User.findOne({uid: uid});
         if(user?.primaryDevice.deviceId === device.deviceId){
             user.primaryDevice.deviceName = device.deviceName;
@@ -87,7 +87,7 @@ class UserService {
             user.primaryDevice.publicKey = device.publicKey;
             user.primaryDevice.encryptedKey = device.encryptedKey;
             user.save();
-            return;
+            return {"message": "Primary Device updated"};
         }
 
         if(user?.devices){
@@ -97,10 +97,14 @@ class UserService {
                     _device.deviceType = device.deviceType;
                     _device.publicKey = device.publicKey;
                     _device.encryptedKey = device.encryptedKey;
+
+                    user.save();
+                    return {"message": "Device updated"};
                 }
             })
-            user.save();
         }
+
+        return {"message": "Device not found"};
     }
 
     public async linkChapterToUser(uid: string, _id: string): Promise<void> {
