@@ -25,11 +25,11 @@ export const getUserById = (req: Request, res: Response) : void => {
 
 export const createUser = async (req: Request, res: Response) : Promise<void> => {
     try{
-        const {uid, name, email, devices} = req.body;
+        const {uid, name, email, deviceId} = req.body;
         console.log(req.body);
-        const iuser: IUser = {uid, name, email, devices} as IUser;
+        const iuser: IUser = {uid, name, email} as IUser;
 
-        const newUserMsg = await UserService.createUser(iuser);
+        const newUserMsg = await UserService.createUser(iuser, deviceId);
         if(newUserMsg != "User already exists") res.status(201).json({"message": newUserMsg});
         else res.status(409).json({message: newUserMsg});
     } catch(error: any){
