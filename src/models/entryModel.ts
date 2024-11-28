@@ -18,5 +18,13 @@ const entrySchema: Schema = new Schema({
     encrypted: {type: Boolean }
 });
 
+interface IDevice {
+    deviceId: string,
+    deviceName: string,
+    deviceType: string,
+    publicKey: string,
+    encryptedKey: string
+}
+
 const Entry = mangoose.model<IEntry>('Entry', entrySchema);
 export default Entry;

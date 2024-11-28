@@ -5,7 +5,7 @@ export interface IUser extends Document {
     name: string;
     email: string;
     chapterIds: [string];
-    devices: [string];
+    devices: [IDevice];
     updateTimestamp: {
         chapters : Date,
         entriesOfChapter: [{
@@ -20,7 +20,13 @@ const userSchema: Schema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     chapterIds: [String],
-    devices: [String],
+    devices: [{
+        deviceId: {type: String, required: true},
+        deviceName: {type: String},
+        deviceType: {type: String},
+        publicKey: {type: String},
+        encryptedKey: {type: String}
+    }],
     updateTimestamp : {
         chapters : {type: Date},
         entriesOfChapter: [
@@ -33,6 +39,14 @@ const userSchema: Schema = new Schema({
 }, { 
     timestamps: true 
 });
+
+export interface IDevice {
+    deviceId: string,
+    deviceName: string,
+    deviceType: string,
+    publicKey: string,
+    encryptedKey: string
+}
 
 const User = mongoose.model<IUser>('User', userSchema);
 

@@ -1,4 +1,4 @@
-import User, { IUser } from '../models/userModel';
+import User, { IDevice, IUser } from '../models/userModel';
 
 class UserService {
     public async getUsers(): Promise<IUser[]> {
@@ -23,6 +23,22 @@ class UserService {
         const newUser = new User(userData);
         newUser.save();  // Business logic: Save user to the DB
         return "User created";
+    }
+
+    public async updateUserDevice(uid: string, device: IDevice): Promise<void> {
+        const user = await User.findOne({uid: uid});
+        if(user?.devices){
+            user.devices.forEach((_device) => {
+                if(_device.deviceId === device.deviceId){
+                    _device.deviceName = device.deviceName;
+                    _device.deviceType = device.deviceType;
+                    _device.publicKey = device.publicKey;
+                    _device.encryptedKey = device.encryptedKey;
+                }
+            })
+
+            user.save();
+        }
     }
 
     public async linkChapterToUser(uid: string, _id: string): Promise<void> {
