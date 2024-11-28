@@ -9,16 +9,21 @@ class UserService {
         return await User.findOne({ uid: id });
     }
 
-    public async createUser(userData: IUser, deviceId: string): Promise<{}>  {
+    public async createUser(userData: IUser, deviceId: string): Promise<any>  {
         const existingUser = await User.findOne({ uid: userData.uid });
         if (existingUser) {
             //check if current device exist
-            existingUser.devices.forEach((_device) => {
+            for(const _device of existingUser.devices){
+                
                 if(_device.deviceId === deviceId){
-                    if(_device.encryptedKey == undefined || _device.encryptedKey == null) return {"code": 2, "message": "no key found"};
+                    console.log(_device.encryptedKey == undefined);
+                    console.log(_device.encryptedKey);
+                    if(_device.encryptedKey == undefined){
+                        return {"code": 2, "message": "no key found"};
+                    }
                     else return {"code": 3, "message": "User and Device already exists"};
                 }
-            })
+            }
             existingUser.devices.push({deviceId: deviceId} as IDevice);
             existingUser.save();
             return {"code": 1, "message": "basic device not found but basic added"};
