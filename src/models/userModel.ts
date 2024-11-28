@@ -5,6 +5,7 @@ export interface IUser extends Document {
     name: string;
     email: string;
     chapterIds: [string];
+    primaryDevice: IDevice;
     devices: [IDevice];
     updateTimestamp: {
         chapters : Date,
@@ -20,6 +21,13 @@ const userSchema: Schema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     chapterIds: [String],
+    primaryDevice: {
+        deviceId: {type: String, required: true},
+        deviceName: {type: String},
+        deviceType: {type: String},
+        publicKey: {type: String},
+        encryptedKey: {type: String}
+    },
     devices: [{
         deviceId: {type: String, required: true},
         deviceName: {type: String},

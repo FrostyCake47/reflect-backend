@@ -9,7 +9,7 @@ class UserService {
         return await User.findOne({ uid: id });
     }
 
-    public async createUser(userData: IUser, deviceId: string): Promise<any>  {
+    /*public async createUser(userData: IUser, deviceId: string): Promise<any>  {
         const existingUser = await User.findOne({ uid: userData.uid });
         if (existingUser) {
             //check if current device exist
@@ -35,10 +35,61 @@ class UserService {
             newUser.save();  // Business logic: Save user to the DB
             return {"code": 0, "message": "1st basic Device and User created"};
         }
+    }*/
+
+    public async createUser(userData: IUser, deviceId: string): Promise<any>  {
+        const existingUser = await User.findOne({ uid: userData.uid });
+        if (existingUser) {
+            //check if primary device exist
+            if(existingUser.primaryDevice.deviceId == undefined){
+                existingUser.primaryDevice = {deviceId: deviceId} as IDevice;
+                existingUser.save();
+                return {"code": 0, "message": "primary device basic"};
+            }
+
+            else if(existingUser.primaryDevice.deviceId === deviceId){
+                //check if primary device properly registered
+                if(existingUser.primaryDevice.encryptedKey) return {"code": 1, "message": "User and Device already exists"};
+
+                //else if primary device does not exist add it
+                else{
+                    return {"code": 2, "message": "primary device basic exist"};
+                }
+            }
+
+            //else its a new device waiting to be connected
+            else{
+                //check if current device exist
+                for(const _device of existingUser.devices){
+                    if(_device.deviceId === deviceId){
+                        if(_device.encryptedKey == undefined){
+                            return {"code": 3, "message": "no key found"};
+                        }
+                        else return {"code": 4, "message": "User and Device already exists"};
+                    }
+                }
+            }
+            
+        }
+        else {
+            //obiously a new user so create a new user
+            userData.primaryDevice = {deviceId: deviceId} as IDevice;
+            userData.save(); 
+            return {"code": 0, "message": "primary device basic"};
+        }
     }
 
     public async updateUserDevice(uid: string, device: IDevice): Promise<void> {
         const user = await User.findOne({uid: uid});
+        if(user?.primaryDevice.deviceId === device.deviceId){
+            user.primaryDevice.deviceName = device.deviceName;
+            user.primaryDevice.deviceType = device.deviceType;
+            user.primaryDevice.publicKey = device.publicKey;
+            user.primaryDevice.encryptedKey = device.encryptedKey;
+            user.save();
+            return;
+        }
+
         if(user?.devices){
             user.devices.forEach((_device) => {
                 if(_device.deviceId === device.deviceId){
@@ -48,7 +99,6 @@ class UserService {
                     _device.encryptedKey = device.encryptedKey;
                 }
             })
-
             user.save();
         }
     }
