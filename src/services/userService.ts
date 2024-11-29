@@ -49,7 +49,7 @@ class UserService {
 
             else if(existingUser.primaryDevice.deviceId === deviceId){
                 //check if primary device properly registered
-                if(existingUser.primaryDevice.encryptedKey) return {"code": 1, "message": "User and Device already exists"};
+                if(existingUser.primaryDevice.deviceName) return {"code": 1, "message": "User and Device already exists"};
 
                 //else if primary device does not exist add it
                 else{
