@@ -30,8 +30,8 @@ export const createUser = async (req: Request, res: Response) : Promise<void> =>
         const iuser: IUser = {uid, name, email} as IUser;
 
         const newUserMsg = await UserService.createUser(iuser, deviceId);
-        if(newUserMsg != "User already exists") res.status(201).json({"message": newUserMsg});
-        else res.status(409).json({message: newUserMsg});
+        if(newUserMsg["code"] == 3) res.status(201).json(newUserMsg);
+        else res.status(409).json(newUserMsg);
     } catch(error: any){
         console.log(error.message);
         res.status(500).json({error:error.message});
