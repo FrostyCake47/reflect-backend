@@ -41,7 +41,7 @@ class UserService {
         const existingUser = await User.findOne({ uid: userData.uid });
         if (existingUser) {
             //check if primary device exist
-            if(existingUser.primaryDevice.deviceId == undefined){
+            if(existingUser.primaryDevice.deviceId == undefined || existingUser.primaryDevice.deviceId == ""){
                 existingUser.primaryDevice = {deviceId: deviceId} as IDevice;
                 existingUser.save();
                 return {"code": 0, "message": "primary device basic"};
@@ -62,12 +62,15 @@ class UserService {
                 //check if current device exist
                 for(const _device of existingUser.devices){
                     if(_device.deviceId === deviceId){
-                        if(_device.encryptedKey == undefined){
+                        if(_device.encryptedKey == undefined || _device.encryptedKey == ""){
                             return {"code": 3, "message": "no key found"};
                         }
                         else return {"code": 4, "message": "User and Device already exists"};
                     }
                 }
+                existingUser.devices.push({deviceId: deviceId} as IDevice);
+                existingUser.save();
+                return {"code": 5, "message": "basic device not found but basic added"};
             }
             
         }
