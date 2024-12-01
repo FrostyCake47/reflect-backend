@@ -119,6 +119,14 @@ class UserService {
         //remove this _id string from the chapterIds array in the user document
         await User.updateOne({ uid: uid }, { $pull: { chapterIds: _id } });
     }
+
+    public async getUserDevices(uid: string): Promise<IDevice[]> {
+        const user = await User.findOne({ uid: uid });
+        var devices: IDevice[] = [];
+        if(user?.primaryDevice.deviceId) devices.push(user.primaryDevice);
+        if(user?.devices) devices = devices.concat(user.devices);
+        return devices;
+    }
 }
 
 export default new UserService();

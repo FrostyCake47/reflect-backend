@@ -48,3 +48,16 @@ export const updateUserDevice = async (req: Request, res: Response) : Promise<vo
         res.status(500).json({error:error.message});
     }
 }
+
+export const getUserDevices = async (req: Request, res: Response) : Promise<void> => {
+    try{
+        const userId = req.params.id;
+        console.log(userId);
+        const devices = await UserService.getUserDevices(userId);
+        console.log(devices);
+        res.status(200).json({devices});
+    } catch(error: any){
+        console.log(error.message);
+        res.status(500).json({error:error.message});
+    }
+}
