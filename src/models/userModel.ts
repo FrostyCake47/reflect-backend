@@ -1,4 +1,5 @@
 import mongoose, {Schema, Document, Types } from 'mongoose';
+import timestampService from '../services/timestampService';
 
 export interface IUser extends Document {
     uid: string;
@@ -6,7 +7,7 @@ export interface IUser extends Document {
     email: string;
     chapterIds: [string];
     primaryDevice: IDevice;
-    devices: [IDevice];
+    devices: IDevice[];
     updateTimestamp: {
         chapters : Date,
         entriesOfChapter: [{
@@ -33,8 +34,10 @@ const userSchema: Schema = new Schema({
         deviceName: {type: String},
         deviceType: {type: String},
         publicKey: {type: String},
-        encryptedKey: {type: String}
-    }],
+        encryptedKey: {type: String},
+    },
+    {timestamps: true}    
+    ],
     updateTimestamp : {
         chapters : {type: Date},
         entriesOfChapter: [

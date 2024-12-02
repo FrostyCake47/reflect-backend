@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import UserService from "../services/userService";
 import { IUser } from "../models/userModel";
+import userService from "../services/userService";
 
 export const getUsers = (req: Request, res: Response) : void => {
     try{
@@ -59,5 +60,19 @@ export const getUserDevices = async (req: Request, res: Response) : Promise<void
     } catch(error: any){
         console.log(error.message);
         res.status(500).json({error:error.message});
+    }
+}
+
+export const handleNewDevice = async (req: Request, res: Response) : Promise<void> => {
+    try{
+        const {uid, deviceId, choice, encryptedKey} = req.body;
+        console.log(uid + deviceId + choice + encryptedKey);
+        console.log("is this even getting exec");
+        const user = await userService.handleNewDevice(uid, deviceId, choice, encryptedKey);
+        if(user) res.status(200).json(user);
+        else res.status(409).json(user);
+    } catch(e: any) {
+        console.log("error at handleNewDevice: " + e.message);
+        res.status(500).json({"error":e.message});
     }
 }

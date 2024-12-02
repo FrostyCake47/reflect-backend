@@ -127,6 +127,23 @@ class UserService {
         if(user?.devices) devices = devices.concat(user.devices);
         return devices;
     }
+
+    public async handleNewDevice(uid: string, deviceId: string, choice: boolean, encryptedKey: string): Promise<IUser | null> {
+        const user = await User.findOne({uid});
+        if(user?.devices){
+            console.log("choice: " + choice + " encryptedKey: " + encryptedKey + " deviceId: " + deviceId);
+            for(var i=0; i<user.devices.length; i++){
+                if(user.devices[i].deviceId === deviceId){
+                    if(choice) user.devices[i].encryptedKey = encryptedKey;
+                    else user.devices = user.devices.filter((device) => device.deviceId !== deviceId);
+                }
+            }
+            console.log(user.devices);
+            user.save();
+            return user;
+        }
+        return null;
+    }
 }
 
 export default new UserService();
