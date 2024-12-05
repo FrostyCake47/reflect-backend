@@ -24,7 +24,8 @@ const chapterSchema: Schema = new Schema({
         date: { type: Date, required: true },
         tags: { type: Array<{ [key: string]: any }> },  // Use dynamic keys for content
         chapterId: { type: String, required: true },
-        encrypted: {type: Boolean }
+        encrypted: {type: Boolean },
+        favourite: {type: Boolean }
     }],}, 
     { timestamps: true }
 );

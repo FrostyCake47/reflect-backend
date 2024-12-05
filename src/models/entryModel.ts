@@ -7,6 +7,7 @@ export interface IEntry extends Document{
     tags?: Array<{ [key:string]:any }>;
     chapterId: string;
     encrypted: boolean;
+    favourite: boolean;
 }
 
 const entrySchema: Schema = new Schema({
@@ -15,7 +16,8 @@ const entrySchema: Schema = new Schema({
     date: { type: Date, required: true },
     tags: [{ type: Map, of: Schema.Types.Mixed }],  // Dynamic content
     chapterId: { type: String, required: true },
-    encrypted: {type: Boolean }
+    encrypted: {type: Boolean },
+    favourite: {type: Boolean }
 });
 
 interface IDevice {
