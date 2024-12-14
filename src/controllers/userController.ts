@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import UserService from "../services/userService";
 import { IUser } from "../models/userModel";
 import userService from "../services/userService";
+import { json } from "stream/consumers";
 
 export const getUsers = (req: Request, res: Response) : void => {
     try{
@@ -42,8 +43,9 @@ export const createUser = async (req: Request, res: Response) : Promise<void> =>
 export const updateUserDevice = async (req: Request, res: Response) : Promise<void> => {
     try{
         const {uid, device} = req.body;
-        await UserService.updateUserDevice(uid, device);
-        res.status(200).json({message: "Device updated"});
+        console.log(uid + JSON.stringify(device));
+        const message = await UserService.updateUserDevice(uid, device);
+        res.status(200).json(message);
     } catch(error: any){
         console.log(error.message);
         res.status(500).json({error:error.message});

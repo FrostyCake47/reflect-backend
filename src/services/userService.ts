@@ -37,6 +37,14 @@ class UserService {
         }
     }*/
 
+    //code meaning
+    //0: new user and primary device created
+    //1: user and primary device already exist
+    //2: user exist but primary device does not exist
+    //3: user exist but current device encrypted key not found
+    //4: user and current device already exist
+    //5: user exist but current device does not exist but added
+
     public async createUser(userData: IUser, deviceId: string): Promise<any>  {
         const existingUser = await User.findOne({ uid: userData.uid });
         if (existingUser) {
@@ -49,11 +57,11 @@ class UserService {
 
             else if(existingUser.primaryDevice.deviceId === deviceId){
                 //check if primary device properly registered
-                if(existingUser.primaryDevice.deviceName) return {"code": 1, "message": "User and Device already exists"};
+                if(existingUser.primaryDevice.encryptedKey) return {"code": 1, "message": "User and Device already exists", return: existingUser.primaryDevice.encryptedKey};
 
                 //else if primary device does not exist add it
                 else{
-                    return {"code": 2, "message": "primary device basic exist"};
+                    return {"code": 2, "message": "only primary device basic exist no encr"};
                 }
             }
 
@@ -65,7 +73,7 @@ class UserService {
                         if(_device.encryptedKey == undefined || _device.encryptedKey == ""){
                             return {"code": 3, "message": "no key found"};
                         }
-                        else return {"code": 4, "message": "User and Device already exists"};
+                        else return {"code": 4, "message": "User and Device already exists", encryptedKey: _device.encryptedKey};
                     }
                 }
                 existingUser.devices.push({deviceId: deviceId} as IDevice);
@@ -87,7 +95,10 @@ class UserService {
         if(user?.primaryDevice.deviceId === device.deviceId){
             user.primaryDevice.deviceName = device.deviceName;
             user.primaryDevice.deviceType = device.deviceType;
-            user.primaryDevice.publicKey = device.publicKey;
+            user.primaryDevice.publicKey = {
+                exponent: device.publicKey.exponent,
+                modulus: device.publicKey.modulus,
+            };
             user.primaryDevice.encryptedKey = device.encryptedKey;
             user.save();
             return {"message": "Primary Device updated"};
@@ -98,7 +109,10 @@ class UserService {
                 if(_device.deviceId === device.deviceId){
                     _device.deviceName = device.deviceName;
                     _device.deviceType = device.deviceType;
-                    _device.publicKey = device.publicKey;
+                    _device.publicKey = {
+                        exponent: device.publicKey.exponent,
+                        modulus: device.publicKey.modulus,
+                    };
                     _device.encryptedKey = device.encryptedKey;
 
                     user.save();

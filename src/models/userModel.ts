@@ -26,14 +26,20 @@ const userSchema: Schema = new Schema({
         deviceId: {type: String, required: true},
         deviceName: {type: String},
         deviceType: {type: String},
-        publicKey: {type: String},
+        publicKey: {
+            exponent: {type: String},
+            modulus: {type: String}
+        },
         encryptedKey: {type: String}
     },
     devices: [{
         deviceId: {type: String, required: true},
         deviceName: {type: String},
         deviceType: {type: String},
-        publicKey: {type: String},
+        publicKey: {
+            exponent: {type: String},
+            modulus: {type: String}
+        },
         encryptedKey: {type: String},
     },
     {timestamps: true}    
@@ -55,7 +61,10 @@ export interface IDevice {
     deviceId: string,
     deviceName: string,
     deviceType: string,
-    publicKey: string,
+    publicKey: {
+        exponent: string,
+        modulus: string
+    },
     encryptedKey: string
 }
 
