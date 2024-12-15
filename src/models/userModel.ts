@@ -8,6 +8,7 @@ export interface IUser extends Document {
     chapterIds: [string];
     primaryDevice: IDevice;
     devices: IDevice[];
+    encryptionMode: string;
     updateTimestamp: {
         chapters : Date,
         entriesOfChapter: [{
@@ -22,13 +23,15 @@ const userSchema: Schema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     chapterIds: [String],
+    encryptionMode: {type: String, default: "unencrypted"},
     primaryDevice: {
         deviceId: {type: String, required: true},
         deviceName: {type: String},
         deviceType: {type: String},
         publicKey: {
             exponent: {type: String},
-            modulus: {type: String}
+            modulus: {type: String},
+            testData: {type: String}
         },
         encryptedKey: {type: String}
     },
@@ -38,7 +41,8 @@ const userSchema: Schema = new Schema({
         deviceType: {type: String},
         publicKey: {
             exponent: {type: String},
-            modulus: {type: String}
+            modulus: {type: String},
+            testData: {type: String}
         },
         encryptedKey: {type: String},
     },
@@ -63,7 +67,8 @@ export interface IDevice {
     deviceType: string,
     publicKey: {
         exponent: string,
-        modulus: string
+        modulus: string,
+        testData: string
     },
     encryptedKey: string
 }

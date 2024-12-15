@@ -9,34 +9,6 @@ class UserService {
         return await User.findOne({ uid: id });
     }
 
-    /*public async createUser(userData: IUser, deviceId: string): Promise<any>  {
-        const existingUser = await User.findOne({ uid: userData.uid });
-        if (existingUser) {
-            //check if current device exist
-            for(const _device of existingUser.devices){
-                
-                if(_device.deviceId === deviceId){
-                    console.log(_device.encryptedKey == undefined);
-                    console.log(_device.encryptedKey);
-                    if(_device.encryptedKey == undefined){
-                        return {"code": 2, "message": "no key found"};
-                    }
-                    else return {"code": 3, "message": "User and Device already exists"};
-                }
-            }
-            existingUser.devices.push({deviceId: deviceId} as IDevice);
-            existingUser.save();
-            return {"code": 1, "message": "basic device not found but basic added"};
-        }
-        else {
-            console.log("new user $existingUser");
-            userData.devices = [{deviceId: deviceId} as IDevice];
-            const newUser = new User(userData);
-            newUser.save();  // Business logic: Save user to the DB
-            return {"code": 0, "message": "1st basic Device and User created"};
-        }
-    }*/
-
     //code meaning
     //0: new user and primary device created
     //1: user and primary device already exist
@@ -98,6 +70,7 @@ class UserService {
             user.primaryDevice.publicKey = {
                 exponent: device.publicKey.exponent,
                 modulus: device.publicKey.modulus,
+                testData: device.publicKey.testData
             };
             user.primaryDevice.encryptedKey = device.encryptedKey;
             user.save();
@@ -112,6 +85,7 @@ class UserService {
                     _device.publicKey = {
                         exponent: device.publicKey.exponent,
                         modulus: device.publicKey.modulus,
+                        testData: device.publicKey.testData
                     };
                     _device.encryptedKey = device.encryptedKey;
 
