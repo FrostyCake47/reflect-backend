@@ -24,16 +24,16 @@ class UserService {
             if(existingUser.primaryDevice.deviceId == undefined || existingUser.primaryDevice.deviceId == ""){
                 existingUser.primaryDevice = {deviceId: deviceId} as IDevice;
                 existingUser.save();
-                return {"code": 0, "message": "primary device basic"};
+                return {"code": 0, "message": "primary device basic", "encryptionMode": existingUser.encryptionMode};
             }
 
             else if(existingUser.primaryDevice.deviceId === deviceId){
                 //check if primary device properly registered
-                if(existingUser.primaryDevice.encryptedKey) return {"code": 1, "message": "User and Device already exists", return: existingUser.primaryDevice.encryptedKey};
+                if(existingUser.primaryDevice.encryptedKey) return {"code": 1, "message": "User and Device already exists", return: existingUser.primaryDevice.encryptedKey,  "encryptionMode": existingUser.encryptionMode};
 
                 //else if primary device does not exist add it
                 else{
-                    return {"code": 2, "message": "only primary device basic exist no encr"};
+                    return {"code": 2, "message": "only primary device basic exist no encr", "encryptionMode": existingUser.encryptionMode};
                 }
             }
 
@@ -43,14 +43,14 @@ class UserService {
                 for(const _device of existingUser.devices){
                     if(_device.deviceId === deviceId){
                         if(_device.encryptedKey == undefined || _device.encryptedKey == ""){
-                            return {"code": 3, "message": "no key found"};
+                            return {"code": 3, "message": "no key found", "encryptionMode": existingUser.encryptionMode};
                         }
-                        else return {"code": 4, "message": "User and Device already exists", encryptedKey: _device.encryptedKey};
+                        else return {"code": 4, "message": "User and Device already exists", encryptedKey: _device.encryptedKey, "encryptionMode": existingUser.encryptionMode};
                     }
                 }
                 existingUser.devices.push({deviceId: deviceId} as IDevice);
                 existingUser.save();
-                return {"code": 5, "message": "basic device not found but basic added"};
+                return {"code": 5, "message": "basic device not found but basic added", "encryptionMode": existingUser.encryptionMode};
             }
             
         }
@@ -58,7 +58,7 @@ class UserService {
             //obiously a new user so create a new user
             userData.primaryDevice = {deviceId: deviceId} as IDevice;
             userData.save(); 
-            return {"code": 0, "message": "primary device basic"};
+            return {"code": 0, "message": "primary device basic", "encryptionMode": userData.encryptionMode};
         }
     }
 
