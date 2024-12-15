@@ -132,6 +132,15 @@ class UserService {
         }
         return null;
     }
+
+    public async updateEncryptionMode(uid: string, mode: string): Promise<IUser | null> {
+        return await User.findOneAndUpdate({ uid: uid }, { encryptionMode: mode });
+    }
+
+    public async getUserSettings(uid: string): Promise<IUser | null> {
+        return await User.findOne({uid: uid}, { encryptionMode: 1, email: 1, name: 1, primaryDevice: 1, devices: 1, uid: 1 });
+    }
+
 }
 
 export default new UserService();

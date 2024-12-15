@@ -79,3 +79,30 @@ export const handleNewDevice = async (req: Request, res: Response) : Promise<voi
         res.status(500).json({"error":e.message});
     }
 }
+
+export const updateEncryptionMode = async (req: Request, res: Response) : Promise<void> => {
+    try{
+        const {uid, encryptionMode} = req.body;
+        console.log(uid + encryptionMode);
+        const message = await UserService.updateEncryptionMode(uid, encryptionMode);
+        res.status(200).json({"encryptionMode": message?.encryptionMode});
+    } catch(error: any){
+        console.log(error.message);
+        res.status(500).json({error:error.message});
+    }
+}
+
+export const getUserSettings = async (req: Request, res: Response) : Promise<void> => {
+    try{
+        const userId = req.params.id;
+        console.log(userId);
+        const user = await UserService.getUserSettings(userId);
+        if(user) res.status(200).json(user);
+        else res.status(409).json(user);
+    }
+    catch(error: any){
+        console.log(error.message);
+        res.status(500).json({error:error.message});
+    }
+}
+        
