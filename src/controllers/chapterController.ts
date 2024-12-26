@@ -98,3 +98,21 @@ export const importChapters = async (req: Request, res: Response) : Promise<void
         res.status(500).json({error:error.message});
     }
 }
+
+export const exportChapters = async (req: Request, res: Response) : Promise<void> => {
+    try{
+        const {uid, chapters} = req.body;
+        const _chapters = chapters as IChapter[];
+        const exportedChapters = await ChapterService.exportAll(uid as string, _chapters);
+        if(exportedChapters){
+            res.status(200).json({chapters: exportedChapters});
+        }
+        else{
+            console.log("No chapters found for user: " + uid);
+            res.status(404).json({message: "No chapters found"});
+        }
+    } catch(error: any){
+        console.log(error.message);
+        res.status(500).json({error:error.message});
+    }
+}

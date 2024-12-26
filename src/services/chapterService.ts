@@ -50,6 +50,15 @@ class ChapterService{
     public async importAll(uid: String) : Promise<IChapter[] | null>{
         return await Chapter.find({uid: uid});
     }
+
+    public async exportAll(uid: String, newChapters: IChapter[]) : Promise<IChapter[] | null>{
+        const chapters = await Chapter.find({uid: uid});
+        if(chapters){
+            console.log(chapters);
+        }
+
+        return chapters;
+    }
 }
 
 export default new ChapterService();
