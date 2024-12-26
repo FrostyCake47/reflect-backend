@@ -23,7 +23,7 @@ const userSchema: Schema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     chapterIds: [String],
-    encryptionMode: {type: String, default: "unencrypted"},
+    encryptionMode: {type: String, default: "local"},
     primaryDevice: {
         deviceId: {type: String, required: true},
         deviceName: {type: String},
