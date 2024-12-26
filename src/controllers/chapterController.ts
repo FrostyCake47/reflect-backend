@@ -81,3 +81,10 @@ export const updateChapter = async (req: Request, res: Response) : Promise<void>
         res.status(500).json({error:error});
     }
 }
+
+/*export const syncLocalToRemote = async (req: Request, res: Response) : Promise<void> => {
+    try{
+        const {uid, chapters} = req.body;
+        console.log("Syncing local to remote for user: " + uid);
+
+    }*/

@@ -14,7 +14,6 @@ class ChapterService{
                 return null;
             }
         });
-
         //console.log("Chapter updated at: " + chapterUpdatedAt + " Date: " + date + " Comparison: " + (chapterUpdatedAt && chapterUpdatedAt > date));
         if(chapterUpdatedAt && chapterUpdatedAt > date) return await Chapter.find({ uid: uid }).select('-entries');
         else return null;
@@ -46,6 +45,12 @@ class ChapterService{
     public async decrementEntryCount(id: String) : Promise<IChapter | null>{
         console.log("Decrementing entry count for chapter: " + id);
         return Chapter.findOneAndUpdate({_id: id}, {$inc: {entryCount: -1}}, {new: true});
+    }
+
+    public async syncLocalToRemote(uid: string, chapters: IChapter[]): Promise<void> {
+        const chapterIds = chapters.map((chapter) => chapter._id);
+        await Chapter.deleteMany({ uid: uid, _id: { $nin: chapterIds } });
+        await Chapter.insertMany(chapters, { ordered: false });
     }
 }
 
