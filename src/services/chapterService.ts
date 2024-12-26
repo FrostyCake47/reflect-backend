@@ -47,10 +47,8 @@ class ChapterService{
         return Chapter.findOneAndUpdate({_id: id}, {$inc: {entryCount: -1}}, {new: true});
     }
 
-    public async syncLocalToRemote(uid: string, chapters: IChapter[]): Promise<void> {
-        const chapterIds = chapters.map((chapter) => chapter._id);
-        await Chapter.deleteMany({ uid: uid, _id: { $nin: chapterIds } });
-        await Chapter.insertMany(chapters, { ordered: false });
+    public async importAll(uid: String) : Promise<IChapter[] | null>{
+        return await Chapter.find({uid: uid});
     }
 }
 

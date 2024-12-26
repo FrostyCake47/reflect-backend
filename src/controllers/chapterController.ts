@@ -82,9 +82,19 @@ export const updateChapter = async (req: Request, res: Response) : Promise<void>
     }
 }
 
-/*export const syncLocalToRemote = async (req: Request, res: Response) : Promise<void> => {
+export const importChapters = async (req: Request, res: Response) : Promise<void> => {
     try{
-        const {uid, chapters} = req.body;
-        console.log("Syncing local to remote for user: " + uid);
-
-    }*/
+        const {uid} = req.query;
+        const chapters = await ChapterService.importAll(uid as string);
+        if(chapters){
+            res.status(200).json({chapters: chapters});
+        }
+        else{
+            console.log("No chapters found for user: " + uid);
+            res.status(404).json({message: "No chapters found"});
+        }
+    } catch(error: any){
+        console.log(error.message);
+        res.status(500).json({error:error.message});
+    }
+}
