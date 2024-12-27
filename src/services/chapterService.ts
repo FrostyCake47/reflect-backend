@@ -52,12 +52,15 @@ class ChapterService{
     }
 
     public async exportAll(uid: String, newChapters: IChapter[]) : Promise<IChapter[] | null>{
-        const chapters = await Chapter.find({uid: uid});
-        if(chapters){
-            console.log(chapters);
+        console.log("Exporting all chapters for user: " + uid);
+        //its not deleteing all the records
+        await Chapter.deleteMany({uid: uid});
+
+        for(const chapter of newChapters){
+            await Chapter.insertMany(chapter);
         }
 
-        return chapters;
+        return newChapters;
     }
 }
 
