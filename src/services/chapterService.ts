@@ -38,11 +38,11 @@ class ChapterService{
         return Chapter.findOneAndDelete({_id: id});
     }
 
-    public async incrementEntryCount(id: string) : Promise<IChapter | null>{
+    public async incrementEntryCoun(id: string) : Promise<IChapter | null>{
         return Chapter.findOneAndUpdate({_id: id}, {$inc: {entryCount: 1}}, {new: true});
     }
 
-    public async decrementEntryCount(id: String) : Promise<IChapter | null>{
+    public async decrementEntryCoun(id: String) : Promise<IChapter | null>{
         console.log("Decrementing entry count for chapter: " + id);
         return Chapter.findOneAndUpdate({_id: id}, {$inc: {entryCount: -1}}, {new: true});
     }

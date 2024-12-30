@@ -23,7 +23,12 @@ const userSchema: Schema = new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true},
     chapterIds: [String],
-    encryptionMode: {type: String, default: "local"},
+
+    encryptionMode: {type: String, default: "unencrypted"},
+    
+    salt: {type: String},
+    symmetricKey: {type: String},
+
     primaryDevice: {
         deviceId: {type: String, required: true},
         deviceName: {type: String},

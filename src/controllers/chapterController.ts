@@ -86,6 +86,7 @@ export const importChapters = async (req: Request, res: Response) : Promise<void
     try{
         const {uid} = req.query;
         const chapters = await ChapterService.importAll(uid as string);
+        console.log("Importing all chapters for user: " + JSON.stringify(chapters));
         if(chapters){
             res.status(200).json({chapters: chapters});
         }

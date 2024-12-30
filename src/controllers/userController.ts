@@ -85,7 +85,8 @@ export const updateEncryptionMode = async (req: Request, res: Response) : Promis
         const {uid, encryptionMode} = req.body;
         console.log(uid + encryptionMode);
         const message = await UserService.updateEncryptionMode(uid, encryptionMode);
-        res.status(200).json({"encryptionMode": message?.encryptionMode});
+        if(message) res.status(200).json({"encryptionMode": encryptionMode});
+        else res.status(409).json(message);
     } catch(error: any){
         console.log(error.message);
         res.status(500).json({error:error.message});

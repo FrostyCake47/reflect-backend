@@ -46,7 +46,7 @@ export const createEntry = async (req: Request, res: Response) : Promise<void> =
             
             if(_entry){
                 console.log("Entry created! " + JSON.stringify(_entry));
-                await ChapterService.incrementEntryCount(entry.chapterId);
+                //await ChapterService.incrementEntryCount(entry.chapterId);
                 await timestampService.updateEntryTimestamp(uid as string, entry.chapterId);
                 await timestampService.updateChapterTimestamp(uid as string);
                 res.status(201).json(_entry);
@@ -65,7 +65,7 @@ export const deleteEntry = async (req: Request, res: Response) : Promise<void> =
         const entry = await EntryService.deleteEntry(chapterId as string, entryId as string);
         if(entry){
             console.log("Entry deleted! " + entry);
-            await ChapterService.decrementEntryCount(chapterId as String);
+            //await ChapterService.decrementEntryCount(chapterId as String);
             await timestampService.updateEntryTimestamp(uid as string, chapterId as string);
             await timestampService.updateChapterTimestamp(uid as string);
 

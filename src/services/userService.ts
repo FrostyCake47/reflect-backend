@@ -62,6 +62,22 @@ class UserService {
         }
     }
 
+    public async authenticateUser(userData: IUser, deviceId: string): Promise<any> {
+        const existingUser = await User.findOne({uid: userData.uid});
+        //possible situatiom
+        if(existingUser){
+
+        }
+        //encryption was never enabled
+        else{
+            userData.primaryDevice = {deviceId: deviceId} as IDevice;
+            userData.save(); 
+            return {"code": 0, "message": "primary device basic", "encryptionMode": userData.encryptionMode};
+        }
+        //encryption was enabled sometime
+
+    }
+
     public async updateUserDevice(uid: string, device: IDevice): Promise<{}> {
         const user = await User.findOne({uid: uid});
         if(user?.primaryDevice.deviceId === device.deviceId){

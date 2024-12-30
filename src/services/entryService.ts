@@ -24,6 +24,7 @@ class EntryService{
             else{
                 chapter.entries = [entry];
             }
+            chapter.entryCount = chapter.entries.length;
             chapter.save();
         }
         else{
@@ -39,6 +40,7 @@ class EntryService{
                 const entry = chapter.entries.find(e => e._id == entryId);
                 if(entry){
                     chapter.entries = chapter.entries.filter(e => e._id != entryId) as [IEntry];
+                    chapter.entryCount = chapter.entries.length;
                     chapter.save();
                     return entry;
                 }
