@@ -14,6 +14,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 connectDB();
 
+const accessKeyId = process.env.AWS_S3_ACCESS_KEY_ID;
+const secretAccessKey = process.env.AWS_S3_SECRET_ACCESS_KEY;
+const region = process.env.AWS_REGION;
+
+console.log(accessKeyId + " " + secretAccessKey + " " + region);
+
 // Middleware to parse JSON
 app.use(express.json());
 

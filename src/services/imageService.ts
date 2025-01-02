@@ -3,11 +3,13 @@ import s3 from '../config/s3';
 class ImageService{
     public async uploadImageToS3 (file: Express.Multer.File): Promise<string> {
         try {
+            console.log("filename: " + Date.now() + "  " + file.originalname);
           const params = {
-            Bucket: process.env.AWS_S3_BUCKET_NAME || 'reflectimages', // Name of the bucket
-            Key: file.originalname, // Use a unique key for each file, e.g., `${Date.now()}-${file.originalname}`
+            Bucket: process.env.AWS_BUCKET_NAME || '', // Name of the bucket
+            Key: Date.now() + file.originalname, // Use a unique key for each file, e.g., `${Date.now()}-${file.originalname}`
             Body: file.buffer, // File content
             ContentType: file.mimetype, // File MIME type
+            ACL: 'public-read', // Make the file publicly accessible
           };
       
           const uploadResult = await s3.upload(params).promise();
