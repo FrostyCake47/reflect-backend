@@ -27,20 +27,27 @@ class ImageService{
         }
       };
       
-    /*public async deleteImageFromS3 (fileKey: string): Promise<void> {
+    public async deleteImageFromS3 (fileKeys: string[]): Promise<void> {
         try {
-            const params = {
-            Bucket: process.env.AWS_S3_BUCKET_NAME || 'reflectimages',
-            Key: fileKey,
-            };
-        
-            await s3.deleteObject(params).promise();
-            console.log(`File ${fileKey} deleted successfully.`);
+            for(let i = 0; i < fileKeys.length; i++){
+                if(!fileKeys[i].startsWith('https://reflectimages.s3.ap-south-1.amazonaws.com')) continue;
+              
+                const params = {
+                  Bucket: process.env.AWS_S3_BUCKET_NAME || 'reflectimages',
+                  Key: fileKeys[i].split('amazonaws.com/')[1] // Extract the key from the URL,
+                };
+                
+                //what if the file does not exist?
+                const command = new DeleteObjectCommand(params); 
+                await s3.send(command);
+                console.log(`File ${fileKeys[i]} deleted successfully.`);
+            }
+            
         } catch (error) {
             console.error('Error deleting file from S3:', error);
             throw new Error('Error deleting file');
         }
-    };*/
+    };
 }
 
 export default new ImageService();
