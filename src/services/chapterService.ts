@@ -31,7 +31,7 @@ class ChapterService{
     public async updateChapter(chapterData: IChapter, id: string, date: string) : Promise<IChapter | null> {
         const newChapter = new Chapter(chapterData);
         console.log(newChapter);    
-        return Chapter.findOneAndUpdate({_id: chapterData._id}, {"$set" : {title: chapterData.title, description: chapterData.description, date: new Date(date)}}, {new: true});
+        return Chapter.findOneAndUpdate({_id: chapterData._id}, {"$set" : {title: chapterData.title, description: chapterData.description, date: new Date(date), imageUrl: chapterData.imageUrl}}, {new: true});
     }
 
     public async deleteChapter(id: string) : Promise<IChapter | null>{
