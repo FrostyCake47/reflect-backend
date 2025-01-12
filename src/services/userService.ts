@@ -153,9 +153,14 @@ class UserService {
         return await User.findOneAndUpdate({ uid: uid }, { encryptionMode: mode });
     }
 
-    public async getUserSettings(uid: string): Promise<IUser | null> {
-        return await User.findOne({uid: uid}, { encryptionMode: 1, email: 1, name: 1, primaryDevice: 1, devices: 1, uid: 1 });
+    public async updateSaltAndKeyValidator(uid: string, salt: string, keyValidator: string): Promise<IUser | null> {
+        return await User.findOneAndUpdate({ uid: uid }, { salt: salt, keyValidator: keyValidator });
     }
+
+    public async getUserSettings(uid: string): Promise<IUser | null> {
+        return await User.findOne({uid: uid}, { encryptionMode: 1, email: 1, name: 1, primaryDevice: 1, devices: 1, uid: 1, salt: 1, keyValidator: 1 });
+    }
+
 
 }
 

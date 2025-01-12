@@ -9,6 +9,9 @@ export interface IUser extends Document {
     primaryDevice: IDevice;
     devices: IDevice[];
     encryptionMode: string;
+    salt: string;
+    keyValidator: string;
+
     updateTimestamp: {
         chapters : Date,
         entriesOfChapter: [{
@@ -27,7 +30,7 @@ const userSchema: Schema = new Schema({
     encryptionMode: {type: String, default: "unencrypted"},
     
     salt: {type: String},
-    symmetricKey: {type: String},
+    keyValidator : {type: String},
 
     primaryDevice: {
         deviceId: {type: String, required: true},

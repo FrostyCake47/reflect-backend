@@ -82,11 +82,19 @@ export const handleNewDevice = async (req: Request, res: Response) : Promise<voi
 
 export const updateEncryptionMode = async (req: Request, res: Response) : Promise<void> => {
     try{
-        const {uid, encryptionMode} = req.body;
+        const {uid, encryptionMode, salt, keyValidator} = req.body;
         console.log(uid + encryptionMode);
-        const message = await UserService.updateEncryptionMode(uid, encryptionMode);
-        if(message) res.status(200).json({"encryptionMode": encryptionMode});
-        else res.status(409).json(message);
+
+        if(salt && keyValidator){
+            const message1 = await UserService.updateSaltAndKeyValidator(uid, salt, keyValidator);
+            if(message1 == null) res.status(409).json(message1);
+        }
+        if(encryptionMode){
+            const message2 = await UserService.updateEncryptionMode(uid, encryptionMode);
+            if(message2 == null) res.status(409).json(message2);
+        }
+
+        res.status(200).json({"encryptionMode": encryptionMode, "salt": salt, "keyValidator": keyValidator});
     } catch(error: any){
         console.log(error.message);
         res.status(500).json({error:error.message});
