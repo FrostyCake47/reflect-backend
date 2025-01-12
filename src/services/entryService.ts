@@ -56,6 +56,7 @@ class EntryService{
     }
 
     public async updateEntry(entry: IEntry, chapterId: string) : Promise<IEntry | null>{
+        console.log("my entry: " + JSON.stringify(entry));
         const chapter = await chapterService.getChapterById(chapterId);
         if(chapter){
             if(chapter.entries){
@@ -63,6 +64,8 @@ class EntryService{
                 const index = chapter.entries.findIndex(e => e._id == entry._id);
                 if(index != -1){
                     chapter.entries[index] = entry;
+                    chapter.entries[index].content = entry.content;
+                    console.log("after sometime" + JSON.stringify(chapter.entries[index], null, 2));
                     chapter.save();
                     return entry;
                 }
