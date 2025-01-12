@@ -83,7 +83,7 @@ export const handleNewDevice = async (req: Request, res: Response) : Promise<voi
 export const updateEncryptionMode = async (req: Request, res: Response) : Promise<void> => {
     try{
         const {uid, encryptionMode, salt, keyValidator} = req.body;
-        console.log(uid + encryptionMode);
+        console.log("uid: " + uid + " encryptionMode: " + encryptionMode + " salt: " + salt + " keyValidator: " + keyValidator);
 
         if(salt && keyValidator){
             const message1 = await UserService.updateSaltAndKeyValidator(uid, salt, keyValidator);
