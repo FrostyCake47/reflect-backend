@@ -13,7 +13,6 @@ Welcome to the Reflect Backend! This document provides an overview of the backen
 6. [End-to-End Encryption (E2EE)](#end-to-end-encryption-e2ee)
 7. [Technologies Used](#technologies-used)
 8. [Setup and Installation](#setup-and-installation)
-9. [Contributing](#contributing)
 
 ---
 
