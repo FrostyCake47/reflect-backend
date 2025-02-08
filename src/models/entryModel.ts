@@ -8,6 +8,7 @@ export interface IEntry extends Document{
     chapterId: string;
     encrypted: boolean;
     favourite: boolean;
+    imageUrl: string[];
 }
 
 const entrySchema: Schema = new Schema({
@@ -17,7 +18,8 @@ const entrySchema: Schema = new Schema({
     tags: [{ type: Map, of: Schema.Types.Mixed }],  // Dynamic content
     chapterId: { type: String, required: true },
     encrypted: {type: Boolean },
-    favourite: {type: Boolean }
+    favourite: {type: Boolean },
+    imageUrl: [String]
 });
 
 interface IDevice {

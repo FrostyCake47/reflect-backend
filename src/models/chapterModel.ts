@@ -9,6 +9,7 @@ export interface IChapter extends Document {
     entryCount: number;
     entries?: [IEntry];
     date: Date;
+    encrypted: boolean;
 };
 
 const chapterSchema: Schema = new Schema({
@@ -18,14 +19,16 @@ const chapterSchema: Schema = new Schema({
     imageUrl: [String],
     date: {type: Date},
     entryCount: {type: Number, required: true},
+    encrypted: {type: Boolean, default: false},
     entries: [{
         title: { type: String, required: true },
         content: { type: Array<{ [key: string]: any }> },  // Use dynamic keys for content
         date: { type: Date, required: true },
         tags: { type: Array<{ [key: string]: any }> },  // Use dynamic keys for content
         chapterId: { type: String, required: true },
-        encrypted: {type: Boolean },
-        favourite: {type: Boolean }
+        encrypted: {type: Boolean, default: false},
+        favourite: {type: Boolean },
+        imageUrl: [String]
     }],}, 
     { timestamps: true }
 );

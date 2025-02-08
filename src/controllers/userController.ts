@@ -104,8 +104,9 @@ export const updateEncryptionMode = async (req: Request, res: Response) : Promis
 export const getUserSettings = async (req: Request, res: Response) : Promise<void> => {
     try{
         const userId = req.params.id;
-        console.log(userId);
+        
         const user = await UserService.getUserSettings(userId);
+        console.log(userId + JSON.stringify(user));
         if(user) res.status(200).json(user);
         else res.status(409).json(user);
     }
