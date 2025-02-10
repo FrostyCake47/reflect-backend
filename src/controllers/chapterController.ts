@@ -4,6 +4,7 @@ import { IChapter } from "../models/chapterModel";
 import userService from "../services/userService";
 import timestampService from "../services/timestampService";
 import { DateTime } from 'luxon';
+import imageService from "../services/imageService";
 
 
 export const getChapters = async (req: Request, res: Response) : Promise<void> => {
@@ -30,14 +31,15 @@ export const createChapter = async (req: Request, res: Response) : Promise<void>
     try{
         const {chapter} = req.body;
         const _chapter = await ChapterService.createChapter(chapter as IChapter);
-        await userService.linkChapterToUser(chapter.uid, _chapter._id as string);
+        //await userService.linkChapterToUser(chapter.uid, _chapter._id as string);
 
-        if(_chapter){
+        /*if(_chapter){
             console.log("Chapter created! " + _chapter._id);
             await timestampService.updateChapterTimestamp(chapter.uid);
             res.status(201).json(_chapter);
         }
-        else res.status(409).json({message: "Chapter already exists"});
+        else res.status(409).json({message: "Chapter already exists"});*/
+        res.status(201).json({chapter: _chapter});
         
     } catch(error: any){
         console.log(error.message);
@@ -55,6 +57,9 @@ export const deleteChapter = async (req: Request, res: Response) : Promise<void>
 
         if(chapter){
             console.log("Chapter deleted! " + id);
+            if(chapter.imageUrl) for(const image of chapter.imageUrl) await imageService.deleteImageFromS3(image);
+            if(chapter.entries) for(const entry of chapter.entries) if(entry.imageUrl) for(const image of entry.imageUrl) await imageService.deleteImageFromS3(image);
+
             timestampService.updateChapterTimestamp(uid as string);
             res.status(200).json(chapter);
         }

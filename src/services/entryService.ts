@@ -2,6 +2,7 @@ import Chapter, { IChapter } from "../models/chapterModel";
 import { IEntry } from "../models/entryModel";
 import chapterService from "./chapterService";
 import mongoose, { ObjectId } from 'mongoose';
+import imageService from "./imageService";
 
 class EntryService{
     public async getEntries(chapterId : string) : Promise<IEntry[] | null>{
@@ -38,7 +39,13 @@ class EntryService{
         if(chapter){
             if(chapter.entries){
                 const entry = chapter.entries.find(e => e._id == entryId);
-                if(entry){
+                if(entry && entry.imageUrl){
+                    for(const url of entry.imageUrl){
+                        // Delete image from storage
+                        console.log("deleting image: " + url);
+                        await imageService.deleteImageFromS3(url);
+                    }
+
                     chapter.entries = chapter.entries.filter(e => e._id != entryId) as [IEntry];
                     chapter.entryCount = chapter.entries.length;
                     chapter.save();
@@ -65,6 +72,21 @@ class EntryService{
                 if(index != -1){
                     chapter.entries[index] = entry;
                     chapter.entries[index].content = entry.content;
+
+                    const newImages: {[key: string]: boolean} = {};
+                    for(const url of entry.imageUrl){
+                        newImages[url] = true;
+                    }
+
+                    for(const url of chapter.entries[index].imageUrl){
+                        if(!(url in newImages)){
+                            await imageService.deleteImageFromS3(url);
+                        }
+                    }
+
+                    
+
+                    chapter.entries[index].imageUrl = entry.imageUrl;
                     console.log("after sometime" + JSON.stringify(chapter.entries[index], null, 2));
                     chapter.save();
                     return entry;

@@ -27,20 +27,25 @@ class ImageService{
         }
       };
       
-    /*public async deleteImageFromS3 (fileKey: string): Promise<void> {
+    public async deleteImageFromS3 (fileKey: string): Promise<void> {
         try {
+            //if(!fileKey.startsWith('https://reflectimages')) return;
+
             const params = {
             Bucket: process.env.AWS_S3_BUCKET_NAME || 'reflectimages',
             Key: fileKey,
             };
+
+            const command = new DeleteObjectCommand(params);
+            await s3.send(command);
         
-            await s3.deleteObject(params).promise();
+            //await s3.deleteObject(params).promise();
             console.log(`File ${fileKey} deleted successfully.`);
         } catch (error) {
             console.error('Error deleting file from S3:', error);
             throw new Error('Error deleting file');
         }
-    };*/
+    };
 }
 
 export default new ImageService();

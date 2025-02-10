@@ -1,6 +1,8 @@
+import mongoose from "mongoose";
 import Chapter, { IChapter } from "../models/chapterModel";
 import timestampService from "./timestampService";
 import { DateTime } from 'luxon';
+import imageService from "./imageService";
 
 class ChapterService{
     public async getChapters(uid: string, date: Date, explicit: boolean): Promise<IChapter[] | null> {
@@ -24,14 +26,52 @@ class ChapterService{
     }
 
     public async createChapter(chapterData: IChapter): Promise<IChapter> {
-        const newChapter = new Chapter(chapterData);
-        return newChapter.save();
+        //const newChapter = new Chapter(chapterData);
+        const chapters = await Chapter.find();
+        for (const chapter of chapters) {
+            if (chapter && chapter.entries) {
+                let updated = false;
+
+                for (const entry of chapter.entries) {
+                    if (entry.id) {
+                        entry._id = new mongoose.Types.ObjectId(entry.id);
+                        delete entry.id;
+                        updated = true; // Mark that an update happened
+                    }
+                    entry.chapterId = chapter._id as string
+                }
+
+                if (updated) {
+                    chapter.markModified('entries'); // Inform Mongoose that 'entries' array has changed
+                    await chapter.save(); // Save the chapter with updated entries
+                }
+            }
+        }
+
+        return chapters[0];
+        //return newChapter.save();
     }
 
     public async updateChapter(chapterData: IChapter, id: string, date: string) : Promise<IChapter | null> {
         const newChapter = new Chapter(chapterData);
-        console.log(newChapter);    
-        return Chapter.findOneAndUpdate({_id: chapterData._id}, {"$set" : {title: chapterData.title, description: chapterData.description, date: new Date(date)}}, {new: true});
+        console.log(newChapter); 
+
+        const newImages: {[key: string]: boolean} = {};
+        if(newChapter.imageUrl) for(const url of newChapter.imageUrl){
+            newImages[url] = true;
+        }
+
+        const oldChapter = await Chapter.findOne({_id: id});
+        if(oldChapter){
+            if(oldChapter.imageUrl) for(const url of oldChapter.imageUrl){
+                if(!(url in newImages)){
+                    // Delete image from storage
+                    await imageService.deleteImageFromS3(url);
+                }
+            }
+        }
+
+        return Chapter.findOneAndUpdate({_id: chapterData._id}, {"$set" : {title: chapterData.title, description: chapterData.description, date: new Date(date), imageUrl: chapterData.imageUrl}}, {new: true});
     }
 
     public async deleteChapter(id: string) : Promise<IChapter | null>{
